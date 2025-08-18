@@ -1,0 +1,167 @@
+@charset "UTF-8";
+
+body {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	justify-items: stretch;
+}
+
+.icon-img {
+	width: 50px;
+	height: 50px;
+}
+
+.followList-container {
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.followList-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.topPsge-left {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+.follow-summary {
+	flex: 0 0 350px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 350px;
+	/*	margin-left: auto;*/
+	border-left: 1px solid rgb(199, 199, 199);
+}
+
+
+.post-right {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+
+.followList-wrapper {
+	width: 100%;
+}
+
+
+.strip {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 190px;
+	padding: 50px;
+	border-bottom: 5px solid rgb(199, 199, 199);
+}
+
+.strip-title {
+	margin-right: 30px;
+	font-weight: 100;
+}
+
+.icon-list {
+	display: flex;
+	flex-wrap: wrap;
+	width: 700px;
+
+	gap: 5px;
+}
+
+.post-item {
+	border-bottom: 1px solid rgb(199, 199, 199);
+	display: flex;
+	justify-content: space-between;
+	height: 100px;
+	width: auto;
+	padding: 20px 20px 0 50px;
+}
+
+.post-main {
+	display: flex;
+}
+
+.post-head {
+	display: flex;
+	flex-direction: column;
+	padding-left: 15px;
+	row-gap: 5px;
+}
+
+.post-icon {
+	width: 50px;
+	height: 50px;
+}
+
+.post-time {
+	font-size: 12px;
+}
+
+
+
+
+/*フォロー、フォロワー*/
+
+.user-name {
+	margin-bottom: 20px;
+}
+
+
+.follow-wrapper {
+	width: 100%;
+	border-bottom: 1px solid rgb(199, 199, 199);
+	padding: 20px 20px 30px 20px;
+}
+
+.follow-count {
+	position: relative;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.follow-count p {
+	width: 180px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.follow-count form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	width: 120px;
+	border-radius: 10px;
+	background-color: rgb(41, 80, 255);
+	color: white;
+	font-size: 12px;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.follow-count form button {
+	color: white;
+}
+
+.user-search {
+	margin-top: 30px;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background-color: rgb(41, 80, 255);
+	width: 120px;
+	height: 40px;
+	font-size: 12px;
+}

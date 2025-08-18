@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" th:href="@{/css/createAccount.css}" />
+  <link rel="stylesheet" th:href="@{/css/reset.css}" />
+</head>
+<body>
+  <div class="container">
+    <img th:src="@{/images/atlas.png}" alt="AtlasSNS" />
+    <h1>新規ユーザー登録</h1>
+    <div class="wrapper">
+      <p>AtlasSNSへようこそ</p>
+
+      <form th:action="@{/createAccount}" th:object="${user}" method="post" class="form_wrapper">
+
+        <!-- ユーザー名 -->
+        <div class="createAccount_input">
+          <label>ユーザー名</label>
+          <input type="text" th:field="*{name}" />
+          <span class="error_message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <!-- メールアドレス -->
+        <div class="createAccount_input">
+          <label>メールアドレス</label>
+          <input type="email" th:field="*{email}" />
+          <span class="error_message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+
+        <!-- パスワード -->
+        <div class="createAccount_input">
+          <label>パスワード</label>
+          <input type="password" th:field="*{password}" />
+          <span class="error_message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <!-- パスワード確認 -->
+        <div class="createAccount_input">
+          <label>パスワード確認</label>
+          <input type="password" th:field="*{passwordConfirm}" />
+          <span class="error_message" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></span>
+        </div>
+
+        <button type="submit">新規登録</button>
+      </form>
+
+      <a th:href="@{/login}">
+        <p>ログイン画面に戻る</p>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

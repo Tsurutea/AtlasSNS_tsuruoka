@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+.container {
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+.content {
+	flex: 1;
+}
+
+.profile-box {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+}
+
+.icon-area {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	margin-top: 80px;
+}
+
+.icon-area form {
+	display: flex;
+	flex-direction: column;
+	row-gap: 40px;
+	align-items: center;
+}
+
+.form-row-wrapper {
+	width: 700px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 40px;
+}
+
+.icon-area form textarea {
+	height: 40px;
+}
+
+.icon-img {
+	width: 50px;
+	height: 50px;
+}
+
+/*入力フォーム*/
+
+.form-row {
+	display: flex;
+	justify-content: space-between;
+
+}
+
+.form-row input {
+	width: 300px;
+	background-color: rgb(238, 238, 238);
+	padding: 5px;
+	border: 1px solid black;
+}
+
+.form-row textarea {
+	width: 300px;
+	background-color: rgb(238, 238, 238);
+	padding: 5px;
+	border: 1px solid black;
+}
+
+.file-btn {
+	width: 300px;
+	height: 60px;
+	background-color: rgb(238, 238, 238);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid black;
+}
+
+.file-btn div {
+	width: 150px;
+	background-color: rgb(255, 255, 255);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: gray;
+}
+
+.form-actions .btn{
+	background-color:	rgb(254, 79, 54);
+ 	color: white;
+}
+
+
+
+/*フォローフォロワーリストへのボタン*/
+
+.sidebar {
+	width: 350px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-left: 1px solid rgb(199, 199, 199);
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+
+}
+
+.panel-title {
+	margin-bottom: 20px;
+}
+
+.stat-wrapper {
+	border-bottom: 1px solid rgb(199, 199, 199);
+	padding: 20px 20px 30px 20px;
+	width: 100%;
+	margin-bottom: 30px;
+}
+
+.stat {
+	display: flex;
+	height: 100px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.stat-row {
+	width: 180px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.stat-row strong {
+	font-weight: 100;
+}
+
+.stat .btn {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.stat-btn {
+	background-color: rgb(41, 80, 255);
+	color: white;
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	width: 120px;
+	border-radius: 10px;
+	font-size: 12px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
+	<link rel="stylesheet" th:href="@{/css/reset.css}" />
+</head>
+
+<body>
+	<div class="container">
+		<img th:src="@{/images/atlas.png}" alt="AtlasSNS" />
+		<h1>SOCIAL NETWORK SERVICE</h1>
+		<div class="wrapper">
+			<p>AtlasSNSへようこそ</p>
+
+			<form th:action="@{/login}" th:object="${user}" method="post" class="form_wrapper">
+				<div>
+					<div class="login_input">
+						<label for="email">メールアドレス</label>
+						<input type="email" id="email" th:field="*{email}" autocomplete="email" />
+						<span class="error_message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+					</div>
+
+					<div class="login_input">
+						<label for="password">パスワード</label>
+						<input type="password" id="password" th:field="*{password}" autocomplete="current-password" />
+						<span class="error_message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+					</div>
+				</div>
+				<button type="submit">ログイン</button>
+			</form>
+
+			<a th:href="@{/createAccount}">
+				<p>新規ユーザーの方はこちら</p>
+			</a>
+		</div>
+	</div>
+</body>
+
+</html>

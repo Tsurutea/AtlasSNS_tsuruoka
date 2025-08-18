@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>ユーザー検索 | Atlas</title>
+
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link rel="stylesheet" th:href="@{/css/reset.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/userSearch.css}" href="/css/userSearch.css" />
+</head>
+<body>
+	<header th:replace="~{fragments/header :: header}"></header>
+
+	<main class="container">
+		<section class="content">
+			<div class="left-wrapper">
+				<section class="search-bar">
+					<form th:action="@{/userSearch}" method="post" class="search-form">
+						<input type="text" name="keyword" class="search-input" placeholder="ユーザー名" th:value="${keyword}">
+						<button class="search-button" type="submit" aria-label="検索">
+							<img th:src="@{/images/search.png}" src="/images/search.png" alt="検索" />
+						</button>
+					</form>
+				</section>
+
+				<div class="list-wrap">
+					<ul class="user-list">
+						<li th:if="${#lists.isEmpty(userList)}" class="empty">該当ユーザーがいません。</li>
+
+						<li class="user-item" th:each="u : ${userList}">
+							<div class="user">
+								<div class="avatar-wrapper">
+									<a th:href="@{/otherAccountPage(id=${u.id})}">
+										<img class="avatar-img"
+											th:if="${u.iconImage != null and #strings.startsWith(u.iconImage, 'http')}"
+											th:src="${u.iconImage}" alt="ユーザーアイコン" />
+
+										<img class="avatar-img"
+											th:if="${u.iconImage != null and !#strings.startsWith(u.iconImage, 'http')}"
+											th:src="@{'/images/' + ${u.iconImage}}" alt="ユーザーアイコン" />
+
+										<div class="avatar-circle"
+											th:if="${u.iconImage == null or #strings.isEmpty(u.iconImage)}"
+											th:classappend="' c' + (${u.id} % 6)">
+											<span th:text="${#strings.substring(u.name,0,1).toUpperCase()}">A</span>
+										</div>
+									</a>
+								</div>
+								<div class="user-name">
+									<a th:href="@{/otherAccountPage(id=${u.id})}" th:text="${u.name}">username</a>
+								</div>
+							</div>
+
+							<div class="actions">
+								<form th:if="${followingIds.contains(u.id)}" th:action="@{/unfollow}" method="post">
+									<input type="hidden" name="targetId" th:value="${u.id}">
+									<input type="hidden" name="keyword" th:value="${keyword}">
+									<input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+									<button type="submit" class="btn btn-unfollow">フォロー解除</button>
+								</form>
+
+								<form th:if="${!followingIds.contains(u.id)}" th:action="@{/follow}" method="post">
+									<input type="hidden" name="targetId" th:value="${u.id}">
+									<input type="hidden" name="keyword" th:value="${keyword}">
+									<input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+									<button type="submit" class="btn btn-follow">フォローする</button>
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<aside class="sidebar">
+				<div class="panel profile">
+					<div class="stat-wrapper">
+						<div class="panel-title" th:text="${session.userName != null ? session.userName + 'さんの' : 'あなたの'}">あなたの</div>
+
+						<div class="stat">
+							<div class="stat-row">
+								<span>フォロー数</span>
+								<div><strong th:text="${followings != null ? followings.size() : 0}">0</strong><span>人</span></div>
+							</div>
+							<a class="btn small stat-btn" th:href="@{/followList}">フォローリスト</a>
+						</div>
+
+						<div class="stat">
+							<div class="stat-row">
+								<span>フォロワー数</span>
+								<div><strong th:text="${followers != null ? followers.size() : 0}">0</strong><span>人</span></div>
+							</div>
+							<a class="btn small stat-btn" th:href="@{/followerList}">フォロワーリスト</a>
+						</div>
+					</div>
+
+					<div class="divider"></div>
+					<form th:action="@{/userSearch}" method="post" class="btn primary wide stat-btn">
+						<input type="hidden" name="keyword" value="">
+						<button type="submit">ユーザー検索</button>
+					</form>
+				</div>
+			</aside>
+		</section>
+	</main>
+
+	<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

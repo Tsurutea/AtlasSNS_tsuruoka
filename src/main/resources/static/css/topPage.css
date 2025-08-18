@@ -1,0 +1,359 @@
+@charset "UTF-8";
+
+/* 余計な100%固定は外す */
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+/* 共通UI（ボタン・モーダル） */
+.edit-btn {
+	background-image: url("/images/edit.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 32px;
+	height: 32px;
+	border: none;
+	cursor: pointer;
+}
+
+.edit-btn:hover {
+	background-image: url("/images/edit_h.png");
+}
+
+.trash-btn {
+	background-image: url("/images/trash.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 32px;
+	height: 32px;
+	border: none;
+	cursor: pointer;
+}
+
+.trash-btn:hover {
+	background-image: url("/images/trash-h.png");
+}
+
+/* ==== 既存：編集モーダル（#editModal） ==== */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 999;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.modal-content {
+	position: relative;
+	background: #fff;
+	margin: 10% auto;
+	padding: 40px;
+	border-radius: 8px;
+	width: 80%;
+	max-width: 600px;
+}
+
+.modal-content textarea {
+	border: 1px solid #c7c7c7;
+}
+
+.modal-content form {
+	row-gap: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.close {
+	font-size: 24px;
+	cursor: pointer;
+}
+
+.edit-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+/* ===== 2カラムレイアウト ===== */
+.two-col {
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+	/* 子の高さを揃える */
+}
+
+/* 左ペイン（可変） */
+.main {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+/* 右ペイン（固定幅） */
+.sidebar {
+	flex: 0 0 350px;
+	width: 350px;
+	box-sizing: border-box;
+	border-left: 1px solid rgb(199, 199, 199);
+	display: flex;
+}
+
+.follow-summary {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+/* ===== 投稿UI ===== */
+.post-actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.post-actions img {
+	width: 40px;
+	height: 40px;
+}
+
+.post-form {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 5px solid rgb(199, 199, 199);
+}
+
+.post-form button {
+	display: flex;
+	align-items: flex-end;
+	padding: 0 20px 20px 0;
+}
+
+
+.post-input {
+	display: flex;
+	align-items: flex-start;
+	padding: 40px;
+	gap: 15px;
+}
+
+.my-icon,
+.post-container img {
+	width: 50px;
+	height: auto;
+	object-fit: cover;
+}
+
+.textarea {
+	padding: 15px 0 0 15px;
+	resize: none;
+	height: 150px;
+}
+
+.post-card {
+	border-bottom: 1px solid rgb(199, 199, 199);
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 20px 10px 50px;
+	align-items: stretch;
+	min-height: 100px;
+}
+
+.post-container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+.post-wrapper {
+	display: flex;
+	flex-direction: column;
+	row-gap: 5px;
+	padding-left: 15px;
+}
+
+.post-content {
+	word-break: break-word;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+.post-left {
+	display: flex;
+	gap: 15px;
+}
+
+.post-right {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 30px;
+}
+
+.post-time {
+	font-size: 12px;
+}
+
+/* ===== フォロー概要 ===== */
+.user-name {
+	margin-bottom: 20px;
+}
+
+.follow-wrapper {
+	width: 100%;
+	border-bottom: 1px solid rgb(199, 199, 199);
+	padding: 20px 20px 30px;
+}
+
+.follow-count {
+	position: relative;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.follow-count p {
+	width: 180px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.follow-count form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	width: 120px;
+	border-radius: 10px;
+	background: rgb(41, 80, 255);
+	color: #fff;
+	font-size: 12px;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.follow-count form button {
+	color: #fff;
+}
+
+.user-search {
+	margin-top: 30px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background: rgb(41, 80, 255);
+	width: 120px;
+	height: 40px;
+}
+
+.user-search button {
+	font-size: 12px;
+	color: #fff;
+}
+
+/* ======================================================
+   追加：削除確認モーダル（#confirmModal）
+   ====================================================== */
+.c-modal {
+	position: fixed;
+	inset: 0;
+	display: none;
+	align-items: center;
+	/* 中央揃え */
+	justify-content: center;
+	z-index: 1000;
+}
+
+.c-modal.is-open {
+	display: flex;
+}
+
+.c-modal__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .45);
+	cursor: pointer;
+}
+
+.c-modal__dialog {
+	position: relative;
+	width: min(420px, 92vw);
+	background: #fff;
+	border-radius: 10px;
+	padding: 30px 24px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, .18);
+	z-index: 1;
+}
+
+.c-modal__text {
+	margin: 0 0 20px;
+	line-height: 1.6;
+	font-size: 14px;
+}
+
+.c-modal__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+/* 共通ボタン */
+.c-btn {
+	height: 40px;
+	padding: 0 20px;
+	border-radius: 6px;
+	border: 1px solid #d0d4ff;
+	cursor: pointer;
+	font: inherit;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.c-btn--primary {
+	background: #2950ff;
+	color: #fff;
+	border: none;
+}
+
+.c-btn--ghost {
+	background: #fff;
+	border: 1px solid #c7c7c7;
+	color: #333;
+}
+
+.c-btn--primary:hover {
+	filter: brightness(1.05);
+}
+
+.user-search {
+	margin-top: 30px;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background-color: rgb(41, 80, 255);
+	width: 120px;
+	height: 40px;
+	font-size: 12px;
+}

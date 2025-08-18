@@ -1,0 +1,91 @@
+@charset "UTF-8";
+@charset "UTF-8";
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  background: linear-gradient(to bottom, #007cf0, #00dfd8, #fefb72);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+}
+
+.container img {
+	width: 180px;
+	margin:70px 0 10px 0;
+}
+
+.container h1{
+	margin-bottom: 40px;
+}
+
+.wrapper > * {
+  display: block;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.wrapper > p:first-of-type {
+    font-size: 24px;
+	margin:10px 0 ;
+}
+
+.wrapper > a:last-of-type {
+	text-decoration: underline;
+
+	margin-top: 50px;
+}
+
+.form_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.createAccount_input {
+  display: flex;
+  flex-direction: column;
+  row-gap:5px;
+  margin: 10px 0 10px 0;
+
+}
+
+.createAccount_input input {
+	padding-left: 10px;
+  width: 370px;
+  height: 40px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.createAccount_input label{
+    font-size: 14px;
+}
+
+.form_wrapper button{
+	color: white;
+	height: 40px;
+	width:100px;
+	background-color: rgb(254, 79, 54);
+	border-radius: 10px;
+}
+
+.error_message{
+	width: 370px;
+	line-height: 1.6;
+	background-color: rgb(255, 17, 0);
+	font-size: 12px;
+	border-radius: 10px;
+	padding:5px 10px;
+}

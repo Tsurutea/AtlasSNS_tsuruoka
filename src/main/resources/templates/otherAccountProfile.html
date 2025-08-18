@@ -1,0 +1,189 @@
+<!-- src/main/resources/templates/topPage.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>トップ</title>
+	<link rel="stylesheet" th:href="@{/css/reset.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/otherAccountPage.css}" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+
+	<div class="two-col">
+		<!-- 左：メイン -->
+		<main class="main">
+
+			<!-- ▼ プロフィールヘッダー（/users/{id} で来た時だけ表示） -->
+			<section th:if="${profileUser != null}" class="profile-header">
+				<div class="profile-row">
+					<div class="profile-row-left">
+					<!-- アイコン -->
+					<th:block th:with="
+          v=${profileUser.iconImage},
+          has=${!#strings.isEmpty(v)},
+          isAbsUser=${has} ? ${#strings.startsWith(v,'/user-icons/')} : false,
+          isAbsImg=${has} ? ${#strings.startsWith(v,'/images/')} : false,
+          iconPath=${!has ? '/images/icon1.png' : (isAbsUser || isAbsImg ? v : '/images/'+v)}
+        ">
+						<img th:src="${iconPath}" alt="icon" class="profile-icon" />
+					</th:block>
+
+					<!-- 名前/自己紹介 -->
+					<div class="profile-meta">
+						<div class="profile-name-wrapper">
+							<p>ユーザー名</p>
+							<div class="profile-name" th:text="${profileUser.name}">ユーザー名</div>
+						</div>
+						<div class="profile-bio-wrapper">
+							<p>自己紹介</p>
+							<div class="profile-bio" th:text="${profileUser.bio != null ? profileUser.bio : ''}">自己紹介
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<!-- フォロー/解除ボタン（自分以外の時だけ） -->
+					<div class="profile-actions" th:if="${session.userId != null and profileUser.id != session.userId}">
+						<form th:if="${!isFollowing}" th:action="@{/follow}" method="post">
+							<input type="hidden" name="targetId" th:value="${profileUser.id}" />
+							<button type="submit" class="btn-follow">フォローする</button>
+						</form>
+						<form th:if="${isFollowing}" th:action="@{/unfollow}" method="post">
+							<input type="hidden" name="targetId" th:value="${profileUser.id}" />
+							<button type="submit" class="btn-unfollow">フォロー解除</button>
+						</form>
+					</div>
+				</div>
+			</section>
+
+			<!-- ▼ 投稿フォーム（タイムライン画面のみ表示したいなら th:if="${profileUser == null}" を付与） -->
+			<section th:if="${profileUser == null}">
+				<form th:action="@{/newPost}" method="post" class="post-form">
+					<div class="post-input">
+
+						<!-- 自分のアイコン（クリックで自分のプロフィールへ） -->
+						<th:block th:with="
+            v=${session.userIconImage},
+            has=${!#strings.isEmpty(v)},
+            isAbsUser=${has} ? ${#strings.startsWith(v,'/user-icons/')} : false,
+            isAbsImg=${has} ? ${#strings.startsWith(v,'/images/')} : false,
+            iconPath=${!has ? '/images/icon1.png' : (isAbsUser || isAbsImg ? v : '/images/'+v)}
+          ">
+							<a th:if="${session.userId != null}" th:href="@{/users/{id}(id=${session.userId})}">
+								<img th:src="${iconPath}" alt="アイコン" class="my-icon" />
+							</a>
+							<img th:if="${session.userId == null}" th:src="${iconPath}" alt="アイコン" class="my-icon" />
+						</th:block>
+
+						<textarea class="textarea" maxlength="150" name="content" rows="4" cols="50"
+							placeholder="投稿内容を入力してください"></textarea>
+					</div>
+					<button type="submit" class="post-send">
+						<img th:src="@{/images/post.png}" alt="投稿" class="send-icon" />
+					</button>
+				</form>
+			</section>
+
+			<!-- ▼ 投稿一覧：プロフィールなら profilePosts、通常は posts を表示 -->
+			<section>
+				<div th:with="list=${profileUser != null ? profilePosts : posts}">
+					<div th:if="${list == null or #lists.isEmpty(list)}" class="empty">
+						投稿がありません。
+					</div>
+
+					<div th:each="post : ${list}" class="post-card" th:if="${post != null}">
+						<div class="post-container">
+
+							<!-- 投稿ユーザーのアイコン（プロフィールへリンク） -->
+							<th:block th:with="
+              pimg=${post.user != null} ? ${post.user.iconImage} : null,
+              has=${!#strings.isEmpty(pimg)},
+              isAbsUser=${has} ? ${#strings.startsWith(pimg,'/user-icons/')} : false,
+              isAbsImg=${has} ? ${#strings.startsWith(pimg,'/images/')} : false,
+              iconPath=${!has ? '/images/icon1.png' : (isAbsUser || isAbsImg ? pimg : '/images/'+pimg)}
+            ">
+								<a th:href="@{/users/{id}(id=${post.user.id})}">
+									<img th:src="${iconPath}" alt="アイコン" class="post-icon" />
+								</a>
+							</th:block>
+
+							<div class="post-wrapper">
+								<p class="post-user">
+									<a th:href="@{/users/{id}(id=${post.user.id})}"
+										th:text="${post.user.name}">ユーザー名</a>
+								</p>
+								<p class="post-content" th:text="${post.content}">投稿内容</p>
+							</div>
+						</div>
+
+						<div class="post-right">
+							<p class="post-time" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">投稿日時
+							</p>
+
+							<!-- 自分の投稿だけ編集/削除 -->
+							<div th:if="${post.user != null and post.user.id == session.userId}" class="post-actions">
+								<button type="button" class="edit-btn"
+									th:attr="data-id=${post.id}, data-content=${post.content}"></button>
+								<form th:action="@{/deletePost}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+									<input type="hidden" name="postId" th:value="${post.id}" />
+									<button type="submit" class="trash-btn"></button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</main>
+
+		<!-- 右：サイド -->
+		<aside class="sidebar">
+			<section class="follow-summary">
+				<div class="follow-wrapper">
+					<p class="user-name" th:text="${session.userName} + 'さんの'">ログインユーザーさんの</p>
+
+					<div class="follow-count">
+						<p>フォロー数　<span><span th:text="${followings != null ? followings.size() : 0}">0</span>人</span>
+						</p>
+						<form th:action="@{/followList}" method="get">
+							<button type="submit">フォローリスト</button>
+						</form>
+					</div>
+
+					<div class="follow-count">
+						<p>フォロワー数　<span><span th:text="${followers != null ? followers.size() : 0}">0</span>人</span></p>
+						<form th:action="@{/followerList}" method="get">
+							<button type="submit">フォロワーリスト</button>
+						</form>
+					</div>
+				</div>
+
+				<form th:action="@{/search/user}" method="get" class="user-search">
+				  <button type="submit">ユーザー検索</button>
+				</form>
+			</section>
+		</aside>
+	</div>
+
+	<!-- 編集モーダル -->
+	<div id="editModal" class="modal" style="display:none;">
+		<div class="modal-content">
+			<span class="close edit-close" id="closeModalBtn">&times;</span>
+			<form id="editForm" method="post" th:action="@{/editPost}">
+				<input type="hidden" name="postId" id="editPostId" />
+				<textarea class="textarea" name="content" id="editContent" rows="4" cols="50"></textarea>
+				<button type="submit" class="edit-btn"></button>
+			</form>
+		</div>
+	</div>
+
+	<script th:src="@{/js/header.js}"></script>
+	<script th:src="@{/js/postEdit.js}"></script>
+</body>
+
+</html>

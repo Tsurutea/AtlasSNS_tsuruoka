@@ -1,0 +1,118 @@
+<!-- src/main/resources/templates/mypage.html -->
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>マイページ | Atlas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/css/reset.css}" />
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/mypage.css}" />
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container">
+  <!-- 左：メイン -->
+  <section class="content mypage">
+    <div class="profile-box">
+
+      <div class="icon-area">
+        <!-- me.iconImage が /user-icons/... ならそのまま、裸ファイル名なら /images/ を補う。空/「.」ならデフォルト -->
+        <img class="icon-img"
+             th:src="${#strings.isEmpty(me.iconImage) or me.iconImage == '.' 
+                      ? '/images/icon1.png'
+                      : (#strings.startsWith(me.iconImage,'/user-icons/')
+                          ? me.iconImage
+                          : '/images/' + me.iconImage)}"
+             alt="アイコン">
+
+      <!-- 入力フォーム -->
+      <form th:action="@{/mypage/update}" method="post" enctype="multipart/form-data"
+            th:object="${form}" class="form">
+			<div class="form-row-wrapper">
+        <div class="form-row">
+          <label>ユーザー名</label>
+          <input type="text" th:field="*{name}" placeholder="名前"/>
+          <div class="err" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-row">
+          <label>メールアドレス</label>
+          <input type="email" th:field="*{email}" placeholder="example@example.com"/>
+          <div class="err" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+       
+
+        <!-- ▼ パスワード変更（任意） -->
+        <div class="form-row">
+          <label>新しいパスワード（任意）</label>
+          <input type="password" th:field="*{newPassword}" placeholder="6文字以上"/>
+          <div class="err" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"></div>
+        </div>
+        <div class="form-row">
+          <label>新しいパスワード（確認）</label>
+          <input type="password" th:field="*{newPasswordConfirm}" placeholder="もう一度入力"/>
+          <div class="err" th:if="${#fields.hasErrors('newPasswordConfirm')}" th:errors="*{newPasswordConfirm}"></div>
+        </div>
+		
+		<div class="form-row">
+		         <label>自己紹介</label>
+		         <textarea rows="4" th:field="*{bio}" placeholder="自己紹介を入力"></textarea>
+		         <div class="err" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}"></div>
+		       </div>
+
+		<div class="form-row">
+		  <label for="icon">アイコン画像（任意）</label>
+		  <input type="file" id="icon" th:field="*{icon}" accept="image/*" hidden>
+		  <label for="icon" class="file-btn"><div>ファイルを選択</div></label>
+		</div>
+		</div>
+	
+        <div class="form-actions btn">
+          <button type="submit" class="btn primary">更新する</button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- 右：サイドバー -->
+  <aside class="sidebar">
+    <div class="panel profile">
+      <div class="stat-wrapper">
+        <div class="panel-title"
+             th:text="${session.userName != null ? session.userName + 'さんの' : 'あなたの'}">あなたの</div>
+
+        <div class="stat">
+          <div class="stat-row">
+            <span>フォロー数</span>
+            <div>
+              <strong th:text="${followings != null ? followings.size() : 0}">0</strong><span>人</span>
+            </div>
+          </div>
+          <a class="btn small stat-btn" th:href="@{/followList}">フォローリスト</a>
+        </div>
+
+        <div class="stat">
+          <div class="stat-row">
+            <span>フォロワー数</span>
+            <div>
+              <strong th:text="${followers != null ? followers.size() : 0}">0</strong><span>人</span>
+            </div>
+          </div>
+          <a class="btn small stat-btn" th:href="@{/followerList}">フォロワーリスト</a>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <a class="btn primary wide stat-btn" th:href="@{/searchUser}">ユーザー検索</a>
+    </div>
+  </aside>
+</main>
+
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>
