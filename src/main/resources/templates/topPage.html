@@ -25,7 +25,7 @@
               isImgAbs=${hasVal} ? ${#strings.startsWith(val,'/images/')} : false,
               iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? val : '/images/' + val)}">
               <a class="my-icon" th:if="${session.userId != null}" th:href="@{/users/{id}(id=${session.userId})}">
-                <img th:src="${iconPath}" alt="アイコン" class="my-icon" />
+                <img th:src="${iconPath}" alt="アイコン" />
               </a>
               <img th:if="${session.userId == null}" th:src="${iconPath}" alt="アイコン" class="my-icon" />
             </th:block>
