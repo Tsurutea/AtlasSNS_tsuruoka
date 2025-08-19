@@ -39,7 +39,7 @@
 
 										<img class="avatar-img"
 											th:if="${u.iconImage != null and !#strings.startsWith(u.iconImage, 'http')}"
-											th:src="@{'/images/' + ${u.iconImage}}" alt="ユーザーアイコン" />
+											th:src="@{'images/' + ${u.iconImage}}" alt="ユーザーアイコン" />
 
 										<div class="avatar-circle"
 											th:if="${u.iconImage == null or #strings.isEmpty(u.iconImage)}"

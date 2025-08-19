@@ -6,18 +6,18 @@ import jakarta.validation.constraints.Size;
 
 public class CreateAccountDto {
 
-    @NotBlank(message = "ユーザー名を入力してください")
+    @NotBlank(message = "・ユーザー名を入力してください")
     private String name;
 
-    @NotBlank(message = "メールアドレスを入力してください")
-    @Email(message = "正しいメールアドレス形式で入力してください")
+    @NotBlank(message = "・メールアドレスを入力してください")
+    @Email(message = "・正しいメールアドレス形式で入力してください")
     private String email;
 
-    @NotBlank(message = "パスワードを入力してください")
-    @Size(min = 6, message = "パスワードは6文字以上にしてください")
+    @NotBlank(message = "・パスワードを入力してください")
+    @Size(min = 6, message = "・パスワードは6文字以上にしてください")
     private String password;
 
-    @NotBlank(message = "パスワード確認を入力してください")
+    @NotBlank(message = "・パスワード確認を入力してください")
     private String passwordConfirm;
 
     // getter・setter
