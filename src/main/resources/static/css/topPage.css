@@ -43,6 +43,33 @@ body {
 	background-image: url("/images/trash-h.png");
 }
 
+.delete-btn-wrapper{
+	display: flex;
+	gap: 20px;
+	justify-content: flex-end;
+}
+
+.delete-btn-wrapper button:first-child {
+  background-color: rgb(120, 149, 215);
+  color: white;
+}
+
+.delete-btn-wrapper button:last-child {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.delete-btn-wrapper button{
+	width: 100px;
+	height: 40px;
+	border-radius: 10px;
+	font-size: 14px;
+}
+
+.edit-form{
+	align-items: center;
+}
+
 /* ==== 既存：編集モーダル（#editModal） ==== */
 .modal {
 	display: none;
@@ -72,7 +99,7 @@ body {
 	row-gap: 10px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	margin-top: 40px;
 }
 
 .close {
@@ -145,22 +172,23 @@ body {
 
 .post-input {
 	display: flex;
-	align-items: flex-start;
+	flex: 1;
 	padding: 40px;
 	gap: 15px;
+	
 }
 
 .my-icon,
 .post-container img {
 	width: 50px;
-	height: auto;
-	object-fit: cover;
+	height: 50px;
 }
 
 .textarea {
 	padding: 15px 0 0 15px;
 	resize: none;
 	height: 150px;
+	width: 100%;
 }
 
 .post-card {

@@ -101,11 +101,11 @@
   <div id="editModal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close edit-close" id="closeModalBtn">&times;</span>
-      <form id="editForm" method="post" action="/editPost">
+      <form id="editForm" method="post" action="/editPost" class="edit-form">
         <input type="hidden" name="postId" id="editPostId" value="">
         <textarea class="textarea" name="content" id="editContent" rows="4" cols="50"></textarea>
         <button type="submit" class="edit-submit-btn">
-          <img th:src="@{/images/edit.png}" alt="保存" class="icon-btn">
+          <img th:src="@{/images/edit.png}" alt="保存" class="edit-btn">
         </button>
       </form>
     </div>
@@ -117,8 +117,10 @@
       <p>本当に削除しますか？</p>
       <form method="post" th:action="@{/deletePost}">
         <input type="hidden" name="postId" id="deletePostId" />
-        <button type="submit" id="confirmDeleteBtn">削除</button>
+		<div class="delete-btn-wrapper">
+        <button type="submit" id="confirmDeleteBtn">Ok</button>
         <button type="button" id="cancelDeleteBtn">キャンセル</button>
+		</div>
       </form>
     </div>
   </div>
