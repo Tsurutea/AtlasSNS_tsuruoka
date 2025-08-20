@@ -41,6 +41,7 @@ header {
 	justify-content: center;
 	align-items: center;
 	z-index: 999;
+	border: 1px solid black;
 }
 
 .accordion a {
@@ -48,12 +49,18 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 40px;
-	width: 150px;
+	height: 60px;
+	width: 350px;
 	background-color: white;
-	border: 1px solid black;
 	font-size: 14px;
 	color: black;
+}
+.accordion a:first-child {
+	border-bottom: 1px solid black;
+}
+
+.accordion a:last-child {
+	border-top: 1px solid black;
 }
 
 .accordion a:hover {
