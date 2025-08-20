@@ -1,0 +1,26 @@
+<aside th:fragment="sidebar" class="sidebar">
+				<div class="panel profile">
+					<div class="stat-wrapper">
+						<div class="panel-title" th:text="${session.userName != null ? session.userName + 'さんの' : 'あなたの'}">あなたの</div>
+
+						<div class="stat">
+							<div class="stat-row">
+								<span>フォロー数</span>
+								<div><strong th:text="${followings != null ? followings.size() : 0}">0</strong><span>人</span></div>
+							</div>
+							<a class="btn small stat-btn" th:href="@{/followList}">フォローリスト</a>
+						</div>
+
+						<div class="stat">
+							<div class="stat-row">
+								<span>フォロワー数</span>
+								<div><strong th:text="${followers != null ? followers.size() : 0}">0</strong><span>人</span></div>
+							</div>
+							<a class="btn small stat-btn" th:href="@{/followerList}">フォロワーリスト</a>
+						</div>
+					</div>
+
+					<div class="divider"></div>
+					<a th:href="@{/userSearch}" class="btn user-search">ユーザー検索</a>
+				</div>
+			</asideth:fragment="header">

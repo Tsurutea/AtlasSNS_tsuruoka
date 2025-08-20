@@ -16,6 +16,7 @@ body {
 	display: flex;
 	width: 100%;
 	align-items: stretch;
+	min-height:100vh;
 }
 
 .followList-wrapper {
@@ -48,7 +49,7 @@ body {
 }
 
 .followList-wrapper {
-	width: 100%;
+	flex: 1;
 }
 
 
@@ -106,62 +107,4 @@ body {
 
 
 
-/*フォロー、フォロワー*/
 
-.user-name {
-	margin-bottom: 20px;
-}
-
-
-.follow-wrapper {
-	width: 100%;
-	border-bottom: 1px solid rgb(199, 199, 199);
-	padding: 20px 20px 30px 20px;
-}
-
-.follow-count {
-	position: relative;
-	height: 100px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	margin-bottom: 10px;
-}
-
-.follow-count p {
-	width: 180px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.follow-count form {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 40px;
-	width: 120px;
-	border-radius: 10px;
-	background-color: rgb(41, 80, 255);
-	color: white;
-	font-size: 12px;
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
-}
-
-.follow-count form button {
-	color: white;
-}
-
-.user-search {
-	margin-top: 30px;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 10px;
-	background-color: rgb(41, 80, 255);
-	width: 120px;
-	height: 40px;
-	font-size: 12px;
-}

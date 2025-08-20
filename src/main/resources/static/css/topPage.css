@@ -287,18 +287,6 @@ body {
 	color: #fff;
 }
 
-.user-search {
-	margin-top: 30px;
-	color: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 10px;
-	background: rgb(41, 80, 255);
-	width: 120px;
-	height: 40px;
-}
-
 .user-search button {
 	font-size: 12px;
 	color: #fff;
@@ -378,15 +366,3 @@ body {
 	filter: brightness(1.05);
 }
 
-.user-search {
-	margin-top: 30px;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 10px;
-	background-color: rgb(41, 80, 255);
-	width: 120px;
-	height: 40px;
-	font-size: 12px;
-}

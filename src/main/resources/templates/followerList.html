@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/reset.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}" />
   <link rel="stylesheet" th:href="@{/css/followList.css}" />
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
@@ -60,25 +61,7 @@
     </div>
 
     <!-- 概要 -->
-    <section class="follow-summary">
-      <div class="follow-wrapper">
-        <p class="user-name" th:text="${session.userName} + 'さんの'">ログインユーザーさんの</p>
-        <div class="follow-count">
-          <p>フォロー数　<span><span th:text="${followings != null ? followings.size() : 0}">0</span>人</span></p>
-          <form th:action="@{/followList}" method="get">
-            <button type="submit">フォローリスト</button>
-          </form>
-        </div>
-        <div class="follow-count">
-          <p>フォロワー数　<span><span th:text="${followers != null ? followers.size() : 0}">0</span>人</span></p>
-          <form th:action="@{/followerList}" method="get">
-            <button type="submit">フォロワーリスト</button>
-          </form>
-        </div>
-      </div>
-
-	  <a th:href="@{/userSearch}" class="btn user-search">ユーザー検索</a>
-    </section>
+    <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
   </div>
 
   <script th:src="@{/js/header.js}"></script>

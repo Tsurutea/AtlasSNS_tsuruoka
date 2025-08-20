@@ -8,6 +8,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 	<link rel="stylesheet" th:href="@{/css/reset.css}" />
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/sidebar.css}" />
 	<link rel="stylesheet" th:href="@{/css/userSearch.css}" href="/css/userSearch.css" />
 </head>
 <body>
@@ -73,35 +74,7 @@
 				</div>
 			</div>
 
-			<aside class="sidebar">
-				<div class="panel profile">
-					<div class="stat-wrapper">
-						<div class="panel-title" th:text="${session.userName != null ? session.userName + 'さんの' : 'あなたの'}">あなたの</div>
-
-						<div class="stat">
-							<div class="stat-row">
-								<span>フォロー数</span>
-								<div><strong th:text="${followings != null ? followings.size() : 0}">0</strong><span>人</span></div>
-							</div>
-							<a class="btn small stat-btn" th:href="@{/followList}">フォローリスト</a>
-						</div>
-
-						<div class="stat">
-							<div class="stat-row">
-								<span>フォロワー数</span>
-								<div><strong th:text="${followers != null ? followers.size() : 0}">0</strong><span>人</span></div>
-							</div>
-							<a class="btn small stat-btn" th:href="@{/followerList}">フォロワーリスト</a>
-						</div>
-					</div>
-
-					<div class="divider"></div>
-					<form th:action="@{/userSearch}" method="post" class="btn primary wide stat-btn">
-						<input type="hidden" name="keyword" value="">
-						<button type="submit">ユーザー検索</button>
-					</form>
-				</div>
-			</aside>
+			<aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
 		</section>
 	</main>
 
