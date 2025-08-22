@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{/css/reset.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}" />
   <link rel="stylesheet" th:href="@{/css/mypage.css}" />
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}" />
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
@@ -79,38 +80,7 @@
   </section>
 
   <!-- 右：サイドバー -->
-  <aside class="sidebar">
-    <div class="panel profile">
-      <div class="stat-wrapper">
-        <div class="panel-title"
-             th:text="${session.userName != null ? session.userName + 'さんの' : 'あなたの'}">あなたの</div>
-
-        <div class="stat">
-          <div class="stat-row">
-            <span>フォロー数</span>
-            <div>
-              <strong th:text="${followings != null ? followings.size() : 0}">0</strong><span>人</span>
-            </div>
-          </div>
-          <a class="btn small stat-btn" th:href="@{/followList}">フォローリスト</a>
-        </div>
-
-        <div class="stat">
-          <div class="stat-row">
-            <span>フォロワー数</span>
-            <div>
-              <strong th:text="${followers != null ? followers.size() : 0}">0</strong><span>人</span>
-            </div>
-          </div>
-          <a class="btn small stat-btn" th:href="@{/followerList}">フォロワーリスト</a>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <a class="btn primary wide stat-btn" th:href="@{/searchUser}">ユーザー検索</a>
-    </div>
-  </aside>
+  <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
 </main>
 
 <script th:src="@{/js/header.js}"></script>
