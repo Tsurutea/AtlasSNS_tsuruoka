@@ -1,33 +1,30 @@
 ody>
-	<header th:fragment="header" class="header">
-		<a th:href="@{/topPage}" class="header_left">
-			<img th:src="@{/images/atlas.png}" alt="Atlasロゴ" class="header-logo" />
-		</a>
+<header th:fragment="header" class="header">
+	<a th:href="@{/topPage}" class="header_left">
+		<img th:src="@{/images/atlas.png}" alt="Atlasロゴ" class="header-logo" />
+	</a>
 
-		<div class="header-right">
-			<p class="username">
-				<strong th:text="${session.userName}">ゲスト</strong> さん
-			</p>
+	<div class="header-right">
+		<p class="username">
+			<strong th:text="${session.userName}">ゲスト</strong> さん
+		</p>
 
-			<span class="material-symbols-outlined close" id="toggleButton">
-				keyboard_arrow_up
-			</span>
+		<span class="material-symbols-outlined close" id="toggleButton">
+			keyboard_arrow_up
+		</span>
 
-			<a th:href="@{/mypage}">
-			  <img
-			    class="my-icon"
-			    alt="アイコン"
-			    th:src="${#strings.isEmpty(session.userIconImage) or session.userIconImage == '.' 
+		<a th:href="@{/mypage}" class="icon-fleam">
+			<img class="my-icon" alt="アイコン" th:src="${#strings.isEmpty(session.userIconImage) or session.userIconImage == '.' 
 			              ? '/images/icon1.png' 
 			              : ( #strings.startsWith(session.userIconImage, '/user-icons/') 
 			                    ? session.userIconImage 
 			                    : '/images/' + session.userIconImage) }" />
-			</a>
+		</a>
 
-			<div id="accordionMenu" class="accordion hidden">
-				<a th:href="@{/topPage}">HOME</a>
-				<a th:href="@{/mypage}">プロフィール編集</a>
-				<a th:href="@{/login}">ログアウト</a>
-			</div>
+		<div id="accordionMenu" class="accordion hidden">
+			<a th:href="@{/topPage}">HOME</a>
+			<a th:href="@{/mypage}">プロフィール編集</a>
+			<a th:href="@{/login}">ログアウト</a>
 		</div>
-	</header>
+	</div>
+</header>
