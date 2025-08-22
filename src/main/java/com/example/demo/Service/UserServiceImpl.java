@@ -32,6 +32,11 @@ public class UserServiceImpl implements UserService {
     public boolean emailExists(String email) {
         return email != null && userRepository.findByEmail(email.trim()) != null;
     }
+    
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
     @Override
     @Transactional

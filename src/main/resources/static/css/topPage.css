@@ -178,6 +178,11 @@ body {
 	
 }
 
+.submit-btn {
+	width: 50px;
+	height: 50px;
+}
+
 .my-icon,
 .post-container img {
 	width: 50px;

@@ -33,7 +33,7 @@
 						<li class="user-item" th:each="u : ${userList}">
 							<div class="user">
 								<div class="avatar-wrapper">
-									<a th:href="@{/otherAccountPage(id=${u.id})}">
+									<a th:href="@{/users/{id}(id=${u.id})}">
 										<img class="avatar-img"
 											th:if="${u.iconImage != null and #strings.startsWith(u.iconImage, 'http')}"
 											th:src="${u.iconImage}" alt="ユーザーアイコン" />
