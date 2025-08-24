@@ -18,28 +18,36 @@
 	<div class="two-col">
 		<main class="main">
 			<!-- 投稿フォーム -->
+			<!-- 投稿フォーム -->
 			<section>
-				<form th:action="@{/newPost}" method="post" class="post-form">
-					<div class="post-input">
-						<!-- アイコン -->
-						<th:block th:with="val=${session.userIconImage},
-              hasVal=${!#strings.isEmpty(val)},
-              isUser=${hasVal} ? ${#strings.startsWith(val,'/user-icons/')} : false,
-              isImgAbs=${hasVal} ? ${#strings.startsWith(val,'/images/')} : false,
-              iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? val : '/images/' + val)}">
-							<a class="my-icon" th:if="${session.userId != null}"
-								th:href="@{/users/{id}(id=${session.userId})}">
-								<img th:src="${iconPath}" alt="アイコン" />
-							</a>
-							<img th:if="${session.userId == null}" th:src="${iconPath}" alt="アイコン" class="my-icon" />
-						</th:block>
-						<textarea class="textarea" maxlength="150" name="content" rows="4" cols="50"
-							placeholder="投稿内容を入力してください"></textarea>
-					</div>
-					<button type="submit">
-						<img th:src="@{/images/post.png}" alt="投稿" class="submit-btn" />
-					</button>
-				</form>
+			    <form th:action="@{/newPost}" method="post" class="post-form">
+
+			        <div class="post-input">
+			            <!-- アイコン -->
+			            <th:block th:with="val=${session.userIconImage},
+			              hasVal=${!#strings.isEmpty(val)},
+			              isUser=${hasVal} ? ${#strings.startsWith(val,'/user-icons/')} : false,
+			              isImgAbs=${hasVal} ? ${#strings.startsWith(val,'/images/')} : false,
+			              iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? val : '/images/' + val)}">
+			                <a class="my-icon" th:if="${session.userId != null}"
+			                   th:href="@{/users/{id}(id=${session.userId})}">
+			                    <img th:src="${iconPath}" alt="アイコン" />
+			                </a>
+			                <img th:if="${session.userId == null}" th:src="${iconPath}" alt="アイコン" class="my-icon" />
+			            </th:block>
+			            <textarea class="textarea" maxlength="150" name="content" rows="4" cols="50"
+			                      placeholder="投稿内容を入力してください"></textarea>
+								  
+								  <!-- エラーメッセージ -->
+								  		        <div th:if="${postError}" class="error-message" 
+								  		             style="color:red; margin-bottom:10px;">
+								  		            <p th:text="${postError}"></p>
+								  		        </div>
+			        </div>
+			        <button type="submit">
+			            <img th:src="@{/images/post.png}" alt="投稿" class="submit-btn" />
+			        </button>
+			    </form>
 			</section>
 
 			<!-- 投稿一覧 -->
