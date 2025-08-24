@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
         ).stream().filter(u -> !u.getId().equals(excludeId)).collect(Collectors.toList());
     }
 
+    // 🔽 フォロー関連メソッド修正版
     @Override
     public Set<Long> getFollowingIds(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getFollowings(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         return (user != null) ? user.getFollowing().stream()
-                .map(f -> f.getFollowed())
+                .map(f -> f.getFollowed())   // 自分がフォローしている相手
                 .collect(Collectors.toList())
                 : Collections.emptyList();
     }
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getFollowers(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         return (user != null) ? user.getFollowers().stream()
-                .map(f -> f.getFollowing())
+                .map(f -> f.getFollower())   // 自分をフォローしてくれる人
                 .collect(Collectors.toList())
                 : Collections.emptyList();
     }

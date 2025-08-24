@@ -1,23 +1,27 @@
-// src/main/java/com/example/demo/Service/FollowService.java
 package com.example.demo.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.example.demo.Entity.User;
 
 public interface FollowService {
 
-    List<User> getFollowings(Long userId);   // 自分がフォローしている相手一覧
-    List<User> getFollowers(Long userId);    // 自分をフォローしている相手一覧
+    // フォロワー一覧を取得
+    List<User> getFollowers(Long userId);
 
-    long countFollowings(Long userId);
-    long countFollowers(Long userId);
+    // フォロー中一覧を取得
+    List<User> getFollowings(Long userId);
 
-    boolean isFollowing(Long meId, Long otherId);
+    // ★ フォロー中ユーザーの ID だけを返す（TopPage用）
+    Set<Long> getFollowingIds(Long userId);
 
-    /** すでにフォロー済み or 自分自身 → false, 新規作成できたら true */
-    boolean follow(Long meId, Long targetId);
+    // フォローしているか判定
+    boolean isFollowing(Long followerId, Long followingId);
 
-    /** もともとフォローしていなければ false, 削除できたら true */
-    boolean unfollow(Long meId, Long targetId);
+    // フォロー処理
+    void follow(Long followerId, Long followingId);
+
+    // アンフォロー処理
+    void unfollow(Long followerId, Long followingId);
 }

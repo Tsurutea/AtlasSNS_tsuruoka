@@ -18,12 +18,20 @@
 		<section class="content">
 			<div class="left-wrapper">
 				<section class="search-bar">
-					<form th:action="@{/userSearch}" method="post" class="search-form">
-						<input type="text" name="keyword" class="search-input" placeholder="ユーザー名" th:value="${keyword}">
-						<button class="search-button" type="submit" aria-label="検索">
-							<img th:src="@{/images/search.png}" src="/images/search.png" alt="検索" />
-						</button>
-					</form>
+				    <div class="search-bar-inner">
+				        <form th:action="@{/userSearch}" method="get" class="search-form" style="display:flex; gap:5px;">
+				            <input type="text" name="keyword" class="search-input" placeholder="ユーザー名" th:value="${keyword}">
+				            <button class="search-button" type="submit" aria-label="検索">
+				                <img th:src="@{/images/search.png}" src="/images/search.png" alt="検索" />
+				            </button>
+				        </form>
+
+				        <!-- 🔽 直前の検索ワードを表示 -->
+				        <span th:if="${keyword != null and !#strings.isEmpty(keyword)}" class="search-result-keyword">
+							検索ワード：
+				            <span th:text="${keyword}"></span>
+				        </span>
+				    </div>
 				</section>
 
 				<div class="list-wrap">

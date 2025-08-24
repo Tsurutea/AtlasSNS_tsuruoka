@@ -12,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -50,124 +52,74 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "following")
-    private List<Follow> following; // 自分がフォローしている人との関係
+    @OneToMany(mappedBy = "follower")   // 自分がフォローしている
+    private List<Follow> following;
 
-    @OneToMany(mappedBy = "followed")
-    private List<Follow> followers; // 自分をフォローしている人との関係
+    @OneToMany(mappedBy = "followed")   // 自分をフォローしている
+    private List<Follow> followers;
+
+    // --- ライフサイクルイベント ---
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // --- Getter & Setter ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getName() {
-        return name;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getIconImage() { return iconImage; }
+    public void setIconImage(String iconImage) { this.iconImage = iconImage; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public String getPassword() {
-        return password;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public LocalDateTime getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(LocalDateTime deletedAt) { this.deletedAt = deletedAt; }
 
-    public String getBio() {
-        return bio;
-    }
+    public List<Post> getPosts() { return posts; }
+    public void setPosts(List<Post> posts) { this.posts = posts; }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
+    public List<Follow> getFollowing() { return following; }
+    public void setFollowing(List<Follow> following) { this.following = following; }
 
-    public String getIconImage() {
-        return iconImage;
-    }
+    public List<Follow> getFollowers() { return followers; }
+    public void setFollowers(List<Follow> followers) { this.followers = followers; }
 
-    public void setIconImage(String iconImage) {
-        this.iconImage = iconImage;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
-    public List<Follow> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(List<Follow> following) {
-        this.following = following;
-    }
-
-    public List<Follow> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(List<Follow> followers) {
-        this.followers = followers;
-    }
-
-    // 🔽 追加：フォロー対象Userを取得するSet<User>型メソッド
+    // 🔽 自分がフォローしているユーザー一覧
     public Set<User> getFollows() {
         if (following == null) return Collections.emptySet();
-
         return following.stream()
                 .map(Follow::getFollowed)
                 .collect(Collectors.toSet());
     }
-    
+
+    // 🔽 自分をフォローしているユーザー一覧
     public Set<User> getFollowerUsers() {
         if (followers == null) return Collections.emptySet();
-
         return followers.stream()
-                .map(Follow::getFollowing)  // フォローしてくれてる側のユーザー
+                .map(Follow::getFollower)
                 .collect(Collectors.toSet());
     }
 }

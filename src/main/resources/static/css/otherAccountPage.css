@@ -139,7 +139,7 @@ body {
 	padding-top: 10px;
 }
 
-.profile-row-left{
+.profile-row-left {
 	display: flex;
 }
 
@@ -171,8 +171,8 @@ body {
 .btn-follow {
 	background: rgb(41, 80, 255);
 	position: absolute;
-		bottom: 20px;
-		right: 20px;
+	bottom: 20px;
+	right: 20px;
 }
 
 .btn-unfollow {
@@ -286,6 +286,9 @@ body {
 
 .post-time {
 	font-size: 12px;
+	width: 130px;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .post-actions {

@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 DROP TABLE IF EXISTS follows;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
-=======
->>>>>>> 2f38405 (提出)
 
 -- users テーブル
 CREATE TABLE users (
@@ -25,25 +22,17 @@ CREATE TABLE posts (
     post VARCHAR(400) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-<<<<<<< HEAD
     deleted_at TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
-=======
-    deleted_at TIMESTAMP NULL
->>>>>>> 2f38405 (提出)
 );
 
 -- follows テーブル
 CREATE TABLE follows (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    following_id INT NOT NULL,
+    follower_id INT NOT NULL,
     followed_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-<<<<<<< HEAD
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (following_id) REFERENCES users(id),
+    FOREIGN KEY (follower_id) REFERENCES users(id),
     FOREIGN KEY (followed_id) REFERENCES users(id)
-=======
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
->>>>>>> 2f38405 (提出)
 );

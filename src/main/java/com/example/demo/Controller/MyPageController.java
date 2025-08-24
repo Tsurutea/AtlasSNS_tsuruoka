@@ -60,6 +60,6 @@ public class MyPageController {
         session.setAttribute("userName", updatedUser.getName());
         session.setAttribute("userIconImage", updatedUser.getIconImage());
 
-        return "redirect:/mypage";
+        return "redirect:/topPage";
     }
 }

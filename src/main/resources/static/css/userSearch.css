@@ -11,65 +11,76 @@
 }
 
 /*サーチバー*/
-.search-bar{
+.search-bar {
 	height: 190px;
 	display: flex;
-	align-items: stretch;
 	border-bottom: 5px solid rgb(199, 199, 199);
-}
-
-.search-bar form{
-	display: flex;
-padding-left: 70px;
-	align-items: center;
 	width: 100%;
 }
 
-.search-input{
+.search-bar-inner {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 40px;
+}
+
+.search-result-keyword{
+	width: 200px;
+}
+
+.search-bar form {
+	display: flex;
+	padding-left: 70px;
+	align-items: center;
+}
+
+.search-input {
 	border: 1px solid rgb(199, 199, 199);
 	border-radius: 10px;
-	height:50px;
+	height: 50px;
 	width: 300px;
 	margin-right: 10px;
 	padding-left: 10px;
 }
 
-.search-button{
-	width:50px;
-	height:50px;
+.search-button {
+	width: 50px;
+	height: 50px;
 }
 
 
 /*リスト*/
-.avatar-img{
-	width:50px;
-		height:50px;
+.avatar-img {
+	width: 50px;
+	height: 50px;
 }
 
 .user-list {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 30px;
-padding: 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30px;
+	padding: 40px;
 }
 
-.user-item{
+.user-item {
 	width: 500px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.user{
+.user {
 	display: flex;
 	align-items: center;
 	gap: 30px;
 }
 
 .btn-unfollow {
-  background-color: #e0245e; /* 赤系 */
-  color: #fff;
+	background-color: #e0245e;
+	/* 赤系 */
+	color: #fff;
 }
 
 .btn-follow {
@@ -81,5 +92,3 @@ padding: 40px;
 
 
 /*フォローフォロワーリストへのボタン*/
-
-

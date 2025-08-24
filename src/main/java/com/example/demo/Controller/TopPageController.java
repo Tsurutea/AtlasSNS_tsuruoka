@@ -1,5 +1,10 @@
 package com.example.demo.Controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -7,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.demo.Entity.Post;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.PostRepository;
 import com.example.demo.Repository.UserRepository;
@@ -28,18 +34,31 @@ public class TopPageController {
     }
 
     // -------------------------
-    // タイムライン画面
+    // タイムライン画面（自分＋フォローのみ）
     // -------------------------
     @GetMapping("/topPage")
     public String timeline(HttpSession session, Model model) {
-        model.addAttribute("posts",
-                postRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc());
-
         Long me = (Long) session.getAttribute("userId");
-        if (me != null) {
-            model.addAttribute("followers", followService.getFollowers(me));
-            model.addAttribute("followings", followService.getFollowings(me));
+        if (me == null) {
+            return "redirect:/login";
         }
+
+        // 自分 + フォローしているユーザーID
+        Set<Long> ids = new HashSet<>();
+        ids.add(me);
+        ids.addAll(followService.getFollowingIds(me));
+
+        // Set → List に変換
+        List<Long> idList = new ArrayList<>(ids);
+
+        // 投稿を取得（新しい順）
+        List<Post> posts = postRepository.findByUser_IdInAndDeletedAtIsNullOrderByCreatedAtDesc(idList);
+        model.addAttribute("posts", posts);
+
+        // サイドバー用
+        model.addAttribute("followers", followService.getFollowers(me));
+        model.addAttribute("followings", followService.getFollowings(me));
+
         return "topPage";
     }
 

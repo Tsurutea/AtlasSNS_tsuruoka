@@ -19,10 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByIdNot(Long id);
 
     // 自分がフォローしているユーザー
-    @Query("SELECT f.followed FROM Follow f WHERE f.following.id = :userId")
+    @Query("SELECT f.followed FROM Follow f WHERE f.follower.id = :userId")
     List<User> findFollowingsByUserId(@Param("userId") Long userId);
 
     // 自分をフォローしているユーザー
-    @Query("SELECT f.following FROM Follow f WHERE f.followed.id = :userId")
+    @Query("SELECT f.follower FROM Follow f WHERE f.followed.id = :userId")
     List<User> findFollowersByUserId(@Param("userId") Long userId);
+    
+    List<User> findByNameContainingIgnoreCase(String keyword);
 }
