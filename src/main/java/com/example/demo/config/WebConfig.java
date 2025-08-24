@@ -19,7 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 例: /user-icons/user-1-xxxx.png -> file:{絶対パス}/user-1-xxxx.png
         Path dirPath = Paths.get(userIconDir).toAbsolutePath().normalize();
         String location = dirPath.toUri().toString();
         if (!location.endsWith("/")) {
@@ -28,7 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/user-icons/**")
                 .addResourceLocations(location)
-                // 本番なら長めに、開発なら短めにするなど調整可
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic());
     }
 }

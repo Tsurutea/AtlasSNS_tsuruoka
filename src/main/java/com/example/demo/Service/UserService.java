@@ -14,6 +14,7 @@ public interface UserService {
     List<User> getAllUsersExcept(Long id);
     List<User> searchUsers(String keyword, Long excludeId);
     Set<Long> getFollowingIds(Long userId);
+    User save(User user);
 
     User findById(Long id);
     List<User> getFollowings(Long userId);

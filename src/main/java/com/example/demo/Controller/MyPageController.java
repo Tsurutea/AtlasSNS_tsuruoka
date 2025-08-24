@@ -46,7 +46,6 @@ public class MyPageController {
         return "mypage";
     }
 
-    // プロフィール更新
     @PostMapping("/mypage/update")
     public String updateProfile(@ModelAttribute("form") UserUpdateDto form, HttpSession session) {
         Long myId = (Long) session.getAttribute("userId");
@@ -54,22 +53,12 @@ public class MyPageController {
             return "redirect:/login";
         }
 
-        User me = userService.findById(myId);
+        // ★ 戻り値を受け取る
+        User updatedUser = userService.updateUserProfile(myId, form);
 
-        // プロフィール情報更新
-        me.setName(form.getName());
-        me.setEmail(form.getEmail());
-        me.setBio(form.getBio());
-
-        // パスワード変更リクエストがあれば処理
-        if (form.getNewPassword() != null && !form.getNewPassword().isEmpty()) {
-            if (form.getNewPassword().equals(form.getConfirmPassword())) {
-                // 本来は currentPassword のチェックも必要
-                me.setPassword(form.getNewPassword()); // ★ 後でエンコード推奨
-            }
-        }
-
-        userService.save(me);
+        // セッションに反映
+        session.setAttribute("userName", updatedUser.getName());
+        session.setAttribute("userIconImage", updatedUser.getIconImage());
 
         return "redirect:/mypage";
     }

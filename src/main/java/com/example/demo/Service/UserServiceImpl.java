@@ -1,8 +1,12 @@
 package com.example.demo.Service;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +24,11 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
@@ -100,15 +109,50 @@ public class UserServiceImpl implements UserService {
     public User updateUserProfile(Long userId, UserUpdateDto dto) {
         User user = userRepository.findById(userId).orElseThrow();
 
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setBio(dto.getBio());
+        if (dto.getName() != null && !dto.getName().isEmpty()) {
+            user.setName(dto.getName());
+        }
+        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getBio() != null) {
+            user.setBio(dto.getBio());
+        }
 
+        // パスワード更新
         if (dto.getNewPassword() != null && !dto.getNewPassword().isEmpty()) {
             if (dto.getNewPassword().equals(dto.getConfirmPassword())) {
-                user.setPassword(dto.getNewPassword()); // ★ 本番ではエンコード推奨
+                user.setPassword(dto.getNewPassword()); // ★エンコード推奨
             } else {
                 throw new IllegalStateException("新しいパスワードと確認用パスワードが一致しません。");
+            }
+        }
+
+        // アイコン画像更新
+        if (dto.getIcon() != null && !dto.getIcon().isEmpty()) {
+            try {
+                Path uploadPath = Paths.get("user-icons").toAbsolutePath().normalize();
+                File dir = uploadPath.toFile();
+                if (!dir.exists()) {
+                    dir.mkdirs(); // user-icons フォルダが無ければ作る
+                }
+
+                // ファイル名を安全なUUIDに
+                String ext = "";
+                String originalFilename = dto.getIcon().getOriginalFilename();
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
+                String safeFilename = UUID.randomUUID().toString() + ext;
+
+                File destination = new File(dir, safeFilename);
+                dto.getIcon().transferTo(destination);
+
+                // DBには公開用のパスを保存
+                user.setIconImage("/user-icons/" + safeFilename);
+
+            } catch (Exception e) {
+                throw new RuntimeException("アイコン画像の保存に失敗しました", e);
             }
         }
 
