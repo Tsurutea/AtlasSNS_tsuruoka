@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.Dto.CreateAccountDto;
+import com.example.demo.Dto.UserUpdateDto;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.UserRepository;
 
@@ -92,5 +93,25 @@ public class UserServiceImpl implements UserService {
                 .map(f -> f.getFollowing())
                 .collect(Collectors.toList())
                 : Collections.emptyList();
+    }
+
+    @Override
+    @Transactional
+    public User updateUserProfile(Long userId, UserUpdateDto dto) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setBio(dto.getBio());
+
+        if (dto.getNewPassword() != null && !dto.getNewPassword().isEmpty()) {
+            if (dto.getNewPassword().equals(dto.getConfirmPassword())) {
+                user.setPassword(dto.getNewPassword()); // ★ 本番ではエンコード推奨
+            } else {
+                throw new IllegalStateException("新しいパスワードと確認用パスワードが一致しません。");
+            }
+        }
+
+        return userRepository.save(user);
     }
 }

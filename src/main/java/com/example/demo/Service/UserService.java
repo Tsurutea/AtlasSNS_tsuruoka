@@ -1,10 +1,10 @@
-// com.example.demo.Service.UserService
 package com.example.demo.Service;
 
 import java.util.List;
 import java.util.Set;
 
 import com.example.demo.Dto.CreateAccountDto;
+import com.example.demo.Dto.UserUpdateDto;
 import com.example.demo.Entity.User;
 
 public interface UserService {
@@ -15,10 +15,10 @@ public interface UserService {
     List<User> searchUsers(String keyword, Long excludeId);
     Set<Long> getFollowingIds(Long userId);
 
-    // 追加
     User findById(Long id);
-
-    // フォロー・フォロワー用
     List<User> getFollowings(Long userId);
     List<User> getFollowers(Long userId);
+
+    // 追加: プロフィール更新用
+    User updateUserProfile(Long userId, UserUpdateDto dto);
 }
