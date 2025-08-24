@@ -60,6 +60,13 @@ body {
 	height: 150px;
 }
 
+.strip-title {
+	margin-right: 30px;
+	font-weight: 100;
+	font-size: 20px;
+	width: 200px;
+}
+
 .post-input img {
 	width: 50px;
 	height: 50px;

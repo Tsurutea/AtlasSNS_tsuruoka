@@ -65,12 +65,14 @@ body {
 .strip-title {
 	margin-right: 30px;
 	font-weight: 100;
+	font-size: 24px;
+	width: 200px;
 }
 
 .icon-list {
 	display: flex;
 	flex-wrap: wrap;
-	width: 700px;
+	width: 400px;
 
 	gap: 5px;
 }

@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 
 import java.util.List;
-import java.util.Set;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,56 +16,51 @@ import com.example.demo.Service.FollowService;
 @Controller
 public class UserSearchController {
 
-	private final UserRepository userRepository;
-	private final FollowService followService;
+    private final UserRepository userRepository;
+    private final FollowService followService;
 
-	public UserSearchController(UserRepository userRepository,
-			FollowService followService) {
-		this.userRepository = userRepository;
-		this.followService = followService;
-	}
+    public UserSearchController(UserRepository userRepository,
+                                FollowService followService) {
+        this.userRepository = userRepository;
+        this.followService = followService;
+    }
 
-	// -------------------------
-	// ユーザー検索画面
-	// -------------------------
-	@GetMapping("/userSearch")
-	public String searchUsers(@RequestParam(required = false) String keyword,
-	                          HttpSession session,
-	                          Model model) {
+    @GetMapping("/userSearch")
+    public String searchUsers(@RequestParam(required = false) String keyword,
+                              HttpSession session,
+                              Model model) {
 
-	    Long me = (Long) session.getAttribute("userId");
-	    List<User> userList;
+        Long me = (Long) session.getAttribute("userId");
+        List<User> users;
 
-	    if (keyword == null || keyword.trim().isEmpty()) {
-	        userList = userRepository.findAll();
-	    } else {
-	        userList = userRepository.findByNameContainingIgnoreCase(keyword);
-	    }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            // 初回アクセス/空入力 → 全件表示（自分は除外）
+            users = userRepository.findAll();
+        } else {
+            // 部分一致（大文字小文字無視）
+            users = userRepository.findByNameContainingIgnoreCase(keyword);
+        }
 
-	    // ★ 自分を除外
-	    if (me != null) {
-	        userList = userList.stream()
-	                           .filter(u -> !u.getId().equals(me))
-	                           .toList();
-	    }
+        // 自分自身を結果から除外
+        if (me != null) {
+            users.removeIf(u -> u.getId().equals(me));
+        }
 
-	    model.addAttribute("userList", userList);
-	    model.addAttribute("keyword", keyword);
+        model.addAttribute("userList", users);
+        model.addAttribute("keyword", keyword);
 
-	    if (me != null) {
-	        model.addAttribute("followers", followService.getFollowers(me));
-	        model.addAttribute("followings", followService.getFollowings(me));
-	        model.addAttribute("followingIds", followService.getFollowingIds(me));
-	    } else {
-	        model.addAttribute("followers", List.of());
-	        model.addAttribute("followings", List.of());
-	        model.addAttribute("followingIds", Set.of());
-	    }
+        if (me != null) {
+            model.addAttribute("followers", followService.getFollowers(me));
+            model.addAttribute("followings", followService.getFollowings(me));
+            model.addAttribute("followingIds", followService.getFollowingIds(me));
+        } else {
+            model.addAttribute("followingIds", java.util.Collections.emptySet());
+        }
 
-	    if (userList.isEmpty()) {
-	        model.addAttribute("message", "該当ユーザーがいません。");
-	    }
+        if (users.isEmpty()) {
+            model.addAttribute("message", "該当ユーザーがいません。");
+        }
 
-	    return "userSearch";
-	}
+        return "userSearch";
+    }
 }

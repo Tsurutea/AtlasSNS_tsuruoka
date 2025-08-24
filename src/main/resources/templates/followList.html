@@ -1,69 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <title>フォロー中リスト</title>
+  <title>フォロー一覧 | Atlas</title>
+
   <link rel="stylesheet" th:href="@{/css/reset.css}" />
   <link rel="stylesheet" th:href="@{/css/header.css}" />
-  <link rel="stylesheet" th:href="@{/css/followList.css}" />
   <link rel="stylesheet" th:href="@{/css/sidebar.css}" />
+  <link rel="stylesheet" th:href="@{/css/followList.css}" />
+  <!-- Google Icons（元に戻す） -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
-  <!-- ヘッダー -->
-  <header th:replace="~{fragments/header :: header}"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
-  <div class="followList-container">
-    <div class="followList-wrapper">
-      <!-- ── 上部：フォロー中のアイコン帯 ── -->
-      <section class="icon-strips">
-        <div class="strip" th:if="${followings != null and !#lists.isEmpty(followings)}">
-          <h2 class="strip-title">フォローリスト</h2>
-          <ul class="icon-list">
-            <li class="icon-item" th:each="u : ${followings}">
-              <a th:href="@{/users/{id}(id=${u.id})}" class="icon-link" th:title="${u.name}">
-                <img class="icon-img"
-                     th:src="${!#strings.isEmpty(u.iconImage) ? 
-                               (#strings.startsWith(u.iconImage,'/user-icons/') || #strings.startsWith(u.iconImage,'/images/')
-                                 ? u.iconImage : '/images/' + u.iconImage)
-                               : '/images/default.png'}"
-                     alt="user icon" />
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+<div class="followList-container">
+  <div class="followList-wrapper">
 
-      <!-- ── タイムライン（フォロー中ユーザーの全投稿＝過去分も） ── -->
-      <section class="timeline" th:if="${posts != null and !#lists.isEmpty(posts)}">
-        <ul class="post-list">
-          <li class="post-item" th:each="p : ${posts}">
-            <div class="post-main">
-              <a class="post-link" th:href="@{/users/{id}(id=${p.user.id})}">
-                <img class="post-icon"
-                     th:src="${!#strings.isEmpty(p.user.iconImage) ? 
-                               (#strings.startsWith(p.user.iconImage,'/user-icons/') || #strings.startsWith(p.user.iconImage,'/images/')
-                                 ? p.user.iconImage : '/images/' + p.user.iconImage)
-                               : '/images/default.png'}"
-                     alt="icon" />
-              </a>
-              <div class="post-head">
-                <a class="post-user" th:href="@{/users/{id}(id=${p.user.id})}"
-                   th:text="${p.user.name}">ユーザー名</a>
-                <div class="post-body" th:text="${p.content}">本文</div>
-              </div>
-            </div>
-            <span class="post-time"
-                  th:text="${#temporals.format(p.createdAt, 'yyyy/MM/dd HH:mm')}">日時</span>
-          </li>
-        </ul>
-      </section>
-    </div>
+		<div class="strip">
+		  <h1 class="strip-title">フォローリスト</h1>
 
-    <!-- 概要 -->
-  <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+		  <div class="icon-list">
+		    <a th:each="u : ${followings}" th:href="@{/users/{id}(id=${u.id})}">
+		      <img th:if="${u.iconImage != null and #strings.startsWith(u.iconImage, 'http')}"
+		           th:src="${u.iconImage}" class="icon-img" alt="アイコン" />
+
+		      <img th:if="${u.iconImage != null and !#strings.startsWith(u.iconImage, 'http')}"
+		           th:src="@{'/images/' + ${u.iconImage}}" class="icon-img" alt="アイコン" />
+
+		      <img th:if="${u.iconImage == null}"
+		           th:src="@{/images/icon1.png}" class="icon-img" alt="アイコン" />
+		    </a>
+		  </div>
+		</div>
+
+	<ul>
+		<li th:each="card : ${userCards}" class="post-item">
+		  <div class="post-main">
+		    <!-- アイコン表示 -->
+		    <th:block th:with="pimg=${card.user.iconImage},
+		                hasVal=${!#strings.isEmpty(pimg)},
+		                isUser=${hasVal} ? ${#strings.startsWith(pimg,'/user-icons/')} : false,
+		                isImgAbs=${hasVal} ? ${#strings.startsWith(pimg,'/images/')} : false,
+		                iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? pimg : '/images/' + pimg)}">
+		      <a th:href="@{/users/{id}(id=${card.user.id})}">
+		        <img th:src="${iconPath}" alt="アイコン" class="post-icon" />
+		      </a>
+		    </th:block>
+
+		    <div class="post-head">
+		      <p>
+		        <a th:href="@{/users/{id}(id=${card.user.id})}"
+		           th:text="${card.user.name}">ユーザー名</a>
+		      </p>
+		      <p class="post-text"
+		         th:if="${card.latestPost != null}"
+		         th:text="${card.latestPost.post}">投稿内容</p>
+		      <p th:if="${card.latestPost == null}">投稿なし</p>
+		    </div>
+		  </div>
+
+		  <div class="post-right">
+		    <p class="post-time"
+		       th:if="${card.latestPost != null}"
+		       th:text="${#temporals.format(card.latestPost.createdAt, 'yyyy-MM-dd HH:mm')}">日時</p>
+		  </div>
+		</li>
+	</ul>
+
   </div>
 
-  <script th:src="@{/js/header.js}"></script>
+  <!-- 右サマリー枠を使っているCSSならここに aside を置く -->
+  <aside class="follow-summary">
+    <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+  </aside>
+</div>
+
+<script th:src="@{/js/header.js}"></script>
 </body>
 </html>

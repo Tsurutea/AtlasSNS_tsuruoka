@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,25 +22,40 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    // 投稿者
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // 投稿本文（DBのカラム名も post）
     @Column(name = "post", nullable = false, length = 400)
-    private String content;
+    private String post;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    // --- Getter & Setter ---
+    /* ---------- lifecycle（DB側のDEFAULTでも動きますが保険で） ---------- */
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
 
-    public Long getId() {  // Integer → Long に修正
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /* -------------------- getters / setters -------------------- */
+
+    public Long getId() {
         return id;
     }
 
@@ -53,12 +71,13 @@ public class Post {
         this.user = user;
     }
 
-    public String getContent() {  // `post` → `content` に修正
-        return content;
+    public String getPost() {
+        return post;
     }
 
-    public void setContent(String content) {
-        this.content = content; // ← 正しいフィールド名に修正
+    // ← これが無くてエラーになっていた
+    public void setPost(String post) {
+        this.post = post;
     }
 
     public LocalDateTime getCreatedAt() {
