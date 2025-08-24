@@ -34,7 +34,7 @@ public class TopPageController {
     }
 
     // -------------------------
-    // タイムライン画面（自分＋フォローのみ）
+    // タイムライン画面（自分＋フォローしている人）
     // -------------------------
     @GetMapping("/topPage")
     public String timeline(HttpSession session, Model model) {
@@ -45,14 +45,12 @@ public class TopPageController {
 
         // 自分 + フォローしているユーザーID
         Set<Long> ids = new HashSet<>();
-        ids.add(me);
+        ids.add(me); // ✅ 自分を含める
         ids.addAll(followService.getFollowingIds(me));
 
-        // Set → List に変換
-        List<Long> idList = new ArrayList<>(ids);
-
-        // 投稿を取得（新しい順）
-        List<Post> posts = postRepository.findByUser_IdInAndDeletedAtIsNullOrderByCreatedAtDesc(idList);
+        // Set → List に変換して渡す
+        List<Post> posts = postRepository
+                .findByUser_IdInAndDeletedAtIsNullOrderByCreatedAtDesc(new ArrayList<>(ids));
         model.addAttribute("posts", posts);
 
         // サイドバー用
