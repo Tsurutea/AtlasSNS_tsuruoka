@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.demo.Entity.Post;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.PostRepository;
 import com.example.demo.Repository.UserRepository;
@@ -45,7 +46,7 @@ public class FollowController {
         String referer = request.getHeader("Referer");
         return (referer != null && !referer.isBlank())
                 ? "redirect:" + referer
-                : "redirect:/users/" + targetId;  // プロフィールへ戻す
+                : "redirect:/users/" + targetId;
     }
 
     @PostMapping("/unfollow")
@@ -59,34 +60,41 @@ public class FollowController {
         String referer = request.getHeader("Referer");
         return (referer != null && !referer.isBlank())
                 ? "redirect:" + referer
-                : "redirect:/users/" + targetId;  // プロフィールへ戻す
+                : "redirect:/users/" + targetId;
     }
 
-    // プロフィール表示
+    // プロフィール表示（otherAccountProfile.html）
     @GetMapping("/users/{id}")
     public String showUser(@PathVariable("id") Long id, HttpSession session, Model model) {
         Long me = (Long) session.getAttribute("userId");
         if (me == null) return "redirect:/login";
 
+        // プロフィール対象のユーザー
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        var latestPost = postRepository
-                .findFirstByUser_IdAndDeletedAtIsNullOrderByCreatedAtDesc(id)
-                .orElse(null);
+        // プロフィールユーザーの投稿一覧
+        List<Post> profilePosts = postRepository
+                .findByUser_IdAndDeletedAtIsNullOrderByCreatedAtDesc(id);
 
+        // 最新投稿1件（必要なら）
+        var latestPost = profilePosts.isEmpty() ? null : profilePosts.get(0);
+
+        // ログインユーザーのフォロー・フォロワー
         List<User> followings = followService.getFollowings(me);
         List<User> followers  = followService.getFollowers(me);
 
-        // 🔹 ここ追加
+        // ログインユーザーがこのユーザーをフォローしているか
         boolean isFollowing = followService.isFollowing(me, id);
-        model.addAttribute("isFollowing", isFollowing);
 
+        // View に渡す値
         model.addAttribute("profileUser", user);
+        model.addAttribute("profilePosts", profilePosts);
         model.addAttribute("latestPost", latestPost);
         model.addAttribute("followings", followings);
         model.addAttribute("followers", followers);
+        model.addAttribute("isFollowing", isFollowing);
 
-        return "otherAccountProfile"; // ここは統一
+        return "otherAccountProfile";  // ← HTML テンプレート
     }
 }

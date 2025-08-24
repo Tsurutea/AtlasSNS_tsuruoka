@@ -5,12 +5,9 @@ import java.util.List;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.Entity.Post;
 import com.example.demo.Entity.User;
@@ -103,31 +100,6 @@ public class FollowListController {
         return "followerList";
     }
 
-    // ★ 追加：ユーザー詳細（/user/{id}）
-    @GetMapping("/user/{id}")
-    public String showUser(@PathVariable("id") Long id, HttpSession session, Model model) {
-        Long me = getSessionUserId(session);
-        if (me == null) return "redirect:/login";
-
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        // プロフィールに出したいデータ（必要に応じて拡張）
-        var latestPost = postRepository
-                .findFirstByUser_IdAndDeletedAtIsNullOrderByCreatedAtDesc(id)
-                .orElse(null);
-
-        // 上部アイコン帯用にも常に持っておくと便利
-        List<User> followings = followService.getFollowings(me);
-        List<User> followers  = followService.getFollowers(me);
-
-        model.addAttribute("profileUser", user);
-        model.addAttribute("latestPost", latestPost);
-        model.addAttribute("followings", followings);
-        model.addAttribute("followers", followers);
-
-        return "userDetail"; // ← templates/userDetail.html を用意してください
-    }
 
     // セッションから userId を取り出す共通処理
     private Long getSessionUserId(HttpSession session) {
