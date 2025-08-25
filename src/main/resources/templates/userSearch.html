@@ -9,7 +9,7 @@
 	<link rel="stylesheet" th:href="@{/css/reset.css}" />
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
 	<link rel="stylesheet" th:href="@{/css/sidebar.css}" />
-	<link rel="stylesheet" th:href="@{/css/userSearch.css}" href="/css/userSearch.css" />
+	<link rel="stylesheet" th:href="@{/css/userSearch.css}" />
 </head>
 <body>
 	<header th:replace="~{fragments/header :: header}"></header>
@@ -26,7 +26,6 @@
 				            </button>
 				        </form>
 
-				        <!-- 🔽 直前の検索ワードを表示 -->
 				        <span th:if="${keyword != null and !#strings.isEmpty(keyword)}" class="search-result-keyword">
 							検索ワード：
 				            <span th:text="${keyword}"></span>
@@ -41,22 +40,17 @@
 						<li class="user-item" th:each="u : ${userList}">
 							<div class="user">
 								<div class="avatar-wrapper">
-									<a th:href="@{/users/{id}(id=${u.id})}">
-										<img class="avatar-img"
-											th:if="${u.iconImage != null and #strings.startsWith(u.iconImage, 'http')}"
-											th:src="${u.iconImage}" alt="ユーザーアイコン" />
-
-										<img class="avatar-img"
-											th:if="${u.iconImage != null and !#strings.startsWith(u.iconImage, 'http')}"
-											th:src="@{'images/' + ${u.iconImage}}" alt="ユーザーアイコン" />
-
-										<div class="avatar-circle"
-											th:if="${u.iconImage == null or #strings.isEmpty(u.iconImage)}"
-											th:classappend="' c' + (${u.id} % 6)">
-											<span th:text="${#strings.substring(u.name,0,1).toUpperCase()}">A</span>
-										</div>
-									</a>
+									<th:block th:with="val=${u.iconImage},
+										hasVal=${!#strings.isEmpty(val)},
+										isUser=${hasVal} ? ${#strings.startsWith(val,'/user-icons/')} : false,
+										isImgAbs=${hasVal} ? ${#strings.startsWith(val,'/images/')} : false,
+										iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? val : '/images/' + val)}">
+										<a th:href="@{/users/{id}(id=${u.id})}">
+											<img th:src="${iconPath}" alt="ユーザーアイコン" class="avatar-img" />
+										</a>
+									</th:block>
 								</div>
+
 								<div class="user-name">
 									<a th:href="@{/otherAccountPage(id=${u.id})}" th:text="${u.name}">username</a>
 								</div>

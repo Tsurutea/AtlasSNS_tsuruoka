@@ -1,4 +1,3 @@
-<!-- src/main/resources/templates/mypage.html -->
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -19,13 +18,15 @@
     <div class="profile-box">
 
       <div class="icon-area">
-        <img class="icon-img"
-             th:src="${#strings.isEmpty(user.iconImage) or user.iconImage == '.' 
-                      ? '/images/icon1.png'
-                      : (#strings.startsWith(user.iconImage,'/user-icons/')
-                          ? user.iconImage
-                          : '/images/' + user.iconImage)}"
-             alt="アイコン">
+        <!-- 画像パスを安全に生成するロジック付き -->
+        <th:block th:with="val=${user.iconImage},
+          hasVal=${!#strings.isEmpty(val)},
+          isUser=${hasVal} ? ${#strings.startsWith(val,'/user-icons/')} : false,
+          isImgAbs=${hasVal} ? ${#strings.startsWith(val,'/images/')} : false,
+          iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? val : '/images/' + val)}">
+          <img class="icon-img" th:src="${iconPath}" alt="アイコン" />
+        </th:block>
+      </div>
 
       <!-- 入力フォーム -->
       <form th:action="@{/mypage/update}" method="post" enctype="multipart/form-data"
@@ -54,7 +55,6 @@
           <div class="form-row">
             <label>新しいパスワード（確認）</label>
             <input type="password" th:field="*{confirmPassword}" placeholder="もう一度入力"/>
-            <!-- ★ 修正済み: confirmPassword に統一 -->
             <div class="err" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
           </div>
 
@@ -66,7 +66,6 @@
 
           <div class="form-row">
             <label for="icon">アイコン画像（任意）</label>
-            <!-- DTO に MultipartFile icon を追加済み -->
             <input type="file" id="icon" th:field="*{icon}" accept="image/*" hidden>
             <label for="icon" class="file-btn"><div>ファイルを選択</div></label>
           </div>
