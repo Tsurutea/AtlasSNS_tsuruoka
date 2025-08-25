@@ -22,16 +22,15 @@
 		  <h1 class="strip-title">フォロワーリスト</h1>
 
 		  <div class="icon-list">
-		    <a th:each="u : ${followers}" th:href="@{/users/{id}(id=${u.id})}">
-		      <img th:if="${u.iconImage != null and #strings.startsWith(u.iconImage, 'http')}"
-		           th:src="${u.iconImage}" class="icon-img" alt="アイコン" />
-
-		      <img th:if="${u.iconImage != null and !#strings.startsWith(u.iconImage, 'http')}"
-		           th:src="@{'/images/' + ${u.iconImage}}" class="icon-img" alt="アイコン" />
-
-		      <img th:if="${u.iconImage == null}"
-		           th:src="@{/images/icon1.png}" class="icon-img" alt="アイコン" />
-		    </a>
+			<a th:each="u : ${followings}" th:href="@{/users/{id}(id=${u.id})}">
+			  <th:block th:with="pimg=${u.iconImage},
+			                     hasVal=${!#strings.isEmpty(pimg)},
+			                     isUser=${hasVal} ? ${#strings.startsWith(pimg,'/user-icons/')} : false,
+			                     isImgAbs=${hasVal} ? ${#strings.startsWith(pimg,'/images/')} : false,
+			                     iconPath=${!hasVal ? '/images/icon1.png' : (isUser || isImgAbs ? pimg : '/images/' + pimg)}">
+			    <img th:src="${iconPath}" class="icon-img" alt="アイコン" />
+			  </th:block>
+			</a>
 		  </div>
 		</div>
 
